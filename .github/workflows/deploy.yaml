@@ -3,7 +3,7 @@ name: Build and Publish Helm Chart
 on:
   push:
     branches:
-      - main  # ou a branch que você deseja monitorar
+      - main  # Ou a branch que você deseja monitorar
 
 jobs:
   build-and-publish:
@@ -18,9 +18,6 @@ jobs:
         with:
           version: 'v3.12.3'  # Use a versão do Helm que você precisa
 
-      - name: Atualizar dependências do Helm (se houver)
-        run: helm dependency update ./chart_directory  # Substitua pelo caminho do seu chart
-
       - name: Obter versão do Chart
         id: get_version
         run: |
@@ -29,7 +26,7 @@ jobs:
 
       - name: Empacotar o Chart Helm
         run: |
-          helm package ./chart_directory --destination ./
+          helm package . --destination ./
 
       - name: Configurar usuário do Git
         run: |
@@ -42,14 +39,19 @@ jobs:
           fetch-depth: 0
           ref: gh-pages
 
+      - name: Criar diretório charts (se não existir)
+        run: |
+          mkdir -p ./charts
+
       - name: Mover pacote do chart para gh-pages
         run: |
-          mv ./*.tgz ./charts/
+          mv ../*.tgz ./charts/
 
       - name: Atualizar o index.yaml
         run: |
-          helm repo index ./charts --url https://${{ github.actor }}.github.io/${{ github.event.repository.name }}/charts --merge ./charts/index.yaml
-
+          helm repo index ./charts \
+            --url https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/charts \
+            --merge ./charts/index.yaml
 
       - name: Commit e push das alterações
         env:
