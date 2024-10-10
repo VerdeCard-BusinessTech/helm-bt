@@ -1,0 +1,55 @@
+{{- if and .Values.dns.http.enabled (hasKey .Values "dns") }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.projectName }}-http-ingress
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+    - host: {{ .Values.projectName }}.verdecard.bt
+      http:
+        paths:
+          {{- range .Values.dns.http.paths }}
+          - path: {{ .pathName }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ $.Values.projectName }}-service
+                port:
+                  number: {{ .port }}
+          {{- end }}
+    {{- if hasKey .Values.dns "public" }}
+    {{- range .Values.dns.public.domain }}
+    - host: {{ $.Values.projectName }}.{{ . }}
+      http:
+        paths:
+          {{- range $.Values.dns.http.paths }}
+          - path: {{ .pathName }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ $.Values.projectName }}-service
+                port:
+                  number: {{ .port }}
+          {{- end }}
+    {{- end }}
+    {{- if hasKey $.Values.dns.public "absolute" }}
+    {{- range $.Values.dns.public.absolute }}
+    - host: {{ . }}
+      http:
+        paths:
+          {{- range $.Values.dns.http.paths }}
+          - path: {{ .pathName }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ $.Values.projectName }}-service
+                port:
+                  number: {{ .port }}
+          {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- end }}
+{{- end }}

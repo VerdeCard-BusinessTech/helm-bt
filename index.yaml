@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  chartBt:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-10-10T16:29:10.1150263-03:00"
+    description: A Helm chart for Kubernetes
+    digest: 9faf5061bd257c2fe39aeb6f4a827af540ddf1f18fc2174ed11bb7ad13ffc82c
+    name: chartBt
+    type: application
+    urls:
+    - chartBt-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-10-10T16:29:10.1143243-03:00"

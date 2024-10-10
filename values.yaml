@@ -1,0 +1,113 @@
+projectName: api-voll
+
+container:
+
+  replicas: 1
+
+#* restartPolicy - política de restart do container
+  restartPolicy: Always
+
+#* terminationGracePeriodSeconds - 
+#*    tempo em segundos que o pod tem para terminar antes de ser desligado
+  terminationGracePeriodSeconds: 30
+
+#* image - imagem do container
+#* origin - origem da imagem
+#* project - projeto da imagem
+#* tag - tag da imagem
+#* pullPolicy - política de pull da imagem, procurar manter sempre IfNotPresent
+#* pullSecrets - segredo para puxar a imagem
+#* para o harbor da tencent manter o bt-pipeline
+  image: 
+    path: myimage:latest
+    pullPolicy: IfNotPresent
+    pullSecrets: bt-pipeline
+
+#* args - argumentos que serão passados para o container
+  # args:
+  #   - "-text=banana"
+
+  env:
+    - ENV_A: VALUE_A
+    - ENV_B: VALUE_B
+    
+
+#* livenessProbe - verifica se o container está vivo
+#* httpGet - verifica se o container está vivo com HTTP
+  livenessProbe:
+    enabled: true
+    httpGet:
+      enabled: true
+      path: /livez
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    failureThreshold: 3
+
+#* readinessProbe - verifica se o container está pronto para receber tráfego
+#* httpGet - verifica se o container está pronto para receber tráfego HTTP
+  readinessProbe:
+    enabled: true
+    httpGet:
+      enabled: true
+      path: /livez
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 3
+    failureThreshold: 3
+
+#* ports - portas que o container expõe e serão consumidas no ingress
+  ports:
+    - name: http
+      containerPort: 8080
+      protocol: TCP
+    - name: grpc
+      containerPort: 9090
+      protocol: TCP
+
+#* resources - recursos de CPU e memória
+#* limits - limites de CPU e memória
+#* requests - solicitações de CPU e memória
+  resources:
+    enabled: true
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
+
+#* strategy - estratégia de restart
+#* se for false RollingUpdate será usado automaticamente.
+#* type - tipo de estratégia de atualização.
+#*   Recreate - todos os pods são desligados e recriados.
+#*   RollingUpdate - os pods são atualizados um por um, enquanto os outros continuam a funcionar.
+#* maxSurge - número de pods adicionais que podem ser criados acima do número desejado de pods.
+#* maxUnavailable - número de pods que podem ser indisponíveis durante a atualização.
+  strategy:
+    enabled: true
+    type: RollingUpdate 
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+
+dns:
+  grpc:
+    enabled: true
+    paths:
+      - pathName: /
+        pathType: Prefix
+        port: 9090
+  http:
+    enabled: true
+    paths:
+      - pathName: /v1
+        pathType: Prefix
+        port: 8080
+  public:
+    domain:
+    - mydomain.com
+    - mydomain.xyz
+    absolute:
+    - abs.mydomain.br

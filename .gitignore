@@ -1,0 +1,46 @@
+# Arquivos de backup do editor
+*~
+*.swp
+*.swo
+*.bak
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Arquivos de log
+*.log
+
+# Arquivos temporários
+tmp/
+temp/
+cache/
+
+# Diretórios de saída e build
+dist/
+build/
+output/
+
+# Arquivos gerados pelo Helm
+charts/
+Chart.lock
+
+# Pacotes Helm
+*.tgz
+
+# Arquivos YAML gerados
+values.yaml.generated
+
+# Arquivos de dependências
+vendor/
+
+# Certificados e chaves (se aplicável)
+*.key
+*.crt
+*.pem
+
+# Arquivos de configuração locais
+.env
+.env.local
+.vscode
+*.sh
