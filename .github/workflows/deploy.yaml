@@ -24,7 +24,7 @@ jobs:
       - name: Obter versão do Chart
         id: get_version
         run: |
-          VERSION=$(grep '^version:' ./chart_directory/Chart.yaml | awk '{print $2}')
+          VERSION=$(grep '^version:' ./Chart.yaml | awk '{print $2}')
           echo "chart_version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Empacotar o Chart Helm
@@ -48,7 +48,8 @@ jobs:
 
       - name: Atualizar o index.yaml
         run: |
-          helm repo index ./charts --url https://<USERNAME>.github.io/<REPOSITORY>/charts --merge ./charts/index.yaml
+          helm repo index ./charts --url https://${{ github.actor }}.github.io/${{ github.event.repository.name }}/charts --merge ./charts/index.yaml
+
 
       - name: Commit e push das alterações
         env:
