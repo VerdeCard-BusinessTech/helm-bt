@@ -1,0 +1,59 @@
+name: Build and Publish Helm Chart
+
+on:
+  push:
+    branches:
+      - main  # ou a branch que você deseja monitorar
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Instalar o Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: 'v3.12.3'  # Use a versão do Helm que você precisa
+
+      - name: Atualizar dependências do Helm (se houver)
+        run: helm dependency update ./chart_directory  # Substitua pelo caminho do seu chart
+
+      - name: Obter versão do Chart
+        id: get_version
+        run: |
+          VERSION=$(grep '^version:' ./chart_directory/Chart.yaml | awk '{print $2}')
+          echo "chart_version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Empacotar o Chart Helm
+        run: |
+          helm package ./chart_directory --destination ./
+
+      - name: Configurar usuário do Git
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+
+      - name: Clonar a branch gh-pages
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: gh-pages
+
+      - name: Mover pacote do chart para gh-pages
+        run: |
+          mv ./*.tgz ./charts/
+
+      - name: Atualizar o index.yaml
+        run: |
+          helm repo index ./charts --url https://<USERNAME>.github.io/<REPOSITORY>/charts --merge ./charts/index.yaml
+
+      - name: Commit e push das alterações
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git add charts/
+          git commit -m "Atualiza Chart para a versão ${{ steps.get_version.outputs.chart_version }}"
+          git push origin gh-pages
