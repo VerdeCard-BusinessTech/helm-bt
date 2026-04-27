@@ -26,7 +26,7 @@ jobs:
 
       - name: Empacotar o Chart Helm
         run: |
-          helm package . --destination ./
+          helm package . --destination /tmp/
 
       - name: Configurar usuário do Git
         run: |
@@ -45,7 +45,7 @@ jobs:
 
       - name: Mover pacote do chart para gh-pages
         run: |
-          mv ../*.tgz ./charts/
+          mv /tmp/*.tgz ./charts/
 
       - name: Atualizar o index.yaml
         run: |

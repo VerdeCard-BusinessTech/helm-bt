@@ -92,6 +92,32 @@ container:
       maxSurge: 1
       maxUnavailable: 0
 
+cronjob:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  backoffLimit: 3
+  activeDeadlineSeconds: 600
+  restartPolicy: Never
+
+  image:
+    path: myimage:latest
+    pullPolicy: IfNotPresent
+    pullSecrets: bt-pipeline
+
+  env:
+    - ENV_A: VALUE_A
+
+  resources:
+    enabled: true
+    limits:
+      cpu: 100m
+      memory: 100Mi
+    requests:
+      cpu: 10m
+      memory: 10Mi
+
 dns:
   grpc:
     enabled: true
