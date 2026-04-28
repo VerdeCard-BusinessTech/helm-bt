@@ -93,6 +93,7 @@ container:
       maxUnavailable: 0
 
 cronjob:
+  enabled: false
   schedule: "0 * * * *"
   concurrencyPolicy: Forbid
   successfulJobsHistoryLimit: 3
