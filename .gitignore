@@ -25,9 +25,6 @@ output/
 charts/
 Chart.lock
 
-# Pacotes Helm
-*.tgz
-
 # Arquivos YAML gerados
 values.yaml.generated
 
