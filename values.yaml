@@ -133,8 +133,5 @@ dns:
         pathType: Prefix
         port: 8080
   public:
-    domain:
-    - mydomain.com
-    - mydomain.xyz
-    absolute:
-    - abs.mydomain.br
+    domain: []
+    absolute: []
