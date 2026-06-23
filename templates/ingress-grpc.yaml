@@ -11,18 +11,6 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
 spec:
   rules:
-    - host: {{ .Values.projectName }}.verdecard.bt
-      http:
-        paths:
-          {{- range .Values.dns.grpc.paths }}
-          - path: {{ .pathName }}
-            pathType: {{ .pathType }}
-            backend:
-              service:
-                name: {{ $.Values.projectName }}-service
-                port:
-                  number: {{ .port }}
-          {{- end }}
     {{- if hasKey .Values.dns "public" }}
     {{- range .Values.dns.public.domain }}
     - host: {{ $.Values.projectName }}.{{ . }}
