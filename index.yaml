@@ -3,9 +3,19 @@ entries:
   chartBt:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2026-04-28T10:49:17.5777124-03:00"
+    created: "2026-06-23T12:21:28.5626508-03:00"
     description: A Helm chart for Kubernetes
-    digest: fa365e6337b32a6f3145237e7a31f5e64954054216aef795d6675d24b98e09b8
+    digest: df072ca692bcd562b6d4f8f68640e1694c9442bad163318e6188af26d553bd9c
+    name: chartBt
+    type: application
+    urls:
+    - https://raw.githubusercontent.com/VerdeCard-BusinessTech/helm-bt/main/chartBt-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-06-23T12:21:28.5596532-03:00"
+    description: A Helm chart for Kubernetes
+    digest: 9e11dbb5d7c7341e3132593eafca99f03b3ca500d2fd1d39a570f59bd39f2391
     name: chartBt
     type: application
     urls:
@@ -13,7 +23,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2026-04-28T10:49:17.5767124-03:00"
+    created: "2026-06-23T12:21:28.5586565-03:00"
     description: A Helm chart for Kubernetes
     digest: 4197eb36c2f8acf28072cfc5fb409cf4b7705a9392204684b08d9b7329c27a41
     name: chartBt
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://raw.githubusercontent.com/VerdeCard-BusinessTech/helm-bt/main/chartBt-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-28T10:49:17.5757128-03:00"
+generated: "2026-06-23T12:21:28.5566544-03:00"
